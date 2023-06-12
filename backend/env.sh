@@ -18,4 +18,4 @@ echo "RUN npm install -g @nestjs/cli" >> Dockerfile
 echo "RUN npm install" >> Dockerfile
 echo "COPY . ." >> Dockerfile
 echo "RUN npm run build" >> Dockerfile
-echo "CMD [ "npm", "run", "start" ]" >> Dockerfile
+echo "CMD [ \"npm\", \"run\", \"start\" ]" >> Dockerfile
