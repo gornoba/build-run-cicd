@@ -28,19 +28,19 @@ import { join } from 'path';
         username:
           configService.get('ENV') === 'development'
             ? configService.get('DEV_DB_USERNAME')
-            : configService.get('DEV_DB_USERNAME'),
+            : configService.get('PROD_DB_USERNAME'),
         password:
           configService.get('ENV') === 'development'
-            ? configService.get('PROD_DB_PASSWORD')
-            : configService.get('DEV_DB_PASSWORD'),
+            ? configService.get('DEV_DB_PASSWORD')
+            : configService.get('PROD_DB_PASSWORD'),
         database:
           configService.get('ENV') === 'development'
-            ? configService.get('PROD_DATABASE')
-            : configService.get('DEV_DATABASE'),
+            ? configService.get('DEV_DATABASE')
+            : configService.get('PROD_DATABASE'),
         schema:
           configService.get('ENV') === 'development'
-            ? configService.get('PROD_SCHEMA')
-            : configService.get('DEV_SCHEMA'),
+            ? configService.get('DEV_SCHEMA')
+            : configService.get('PROD_SCHEMA'),
         entities: [ListEntity],
         autoLoadEntities: true,
         synchronize: configService.get('ENV') === 'development' ? true : false,
