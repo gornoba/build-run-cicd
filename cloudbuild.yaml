@@ -1,0 +1,51 @@
+steps:
+  - name: "node:16"
+    entrypoint: "npm"
+    args: ["install"]
+    dir: "frontend"
+  - name: "node:16"
+    entrypoint: "npm"
+    args: ["run", "build"]
+    dir: "frontend"
+  - name: "ubuntu"
+    args: ["bash", "./env.sh"]
+    env:
+      - "ENV=${_ENV}"
+      - "PORT=${_PORT}"
+      - "PROD_DB_HOST=${_PROD_DB_HOST}"
+      - "PROD_DB_USERNAME=${_PROD_DB_USERNAME}"
+      - "PROD_DB_PASSWORD=${_PROD_DB_PASSWORD}"
+      - "PROD_DATABASE=${_PROD_DATABASE}"
+      - "PROD_SCHEMA=${_PROD_SCHEMA}"
+      - "DEV_DB_HOST=${_DEV_DB_HOST}"
+      - "DEV_DB_USERNAME=${_DEV_DB_USERNAME}"
+      - "DEV_DB_PASSWORD=${_DEV_DB_PASSWORD}"
+      - "DEV_DATABASE=${_DEV_DATABASE}"
+      - "DEV_SCHEMA=${_DEV_SCHEMA}"
+    dir: "backend"
+  - name: "gcr.io/cloud-builders/docker"
+    args:
+      ["build", "-t", "gcr.io/$PROJECT_ID/${_SERVICE_NAME}:$COMMIT_SHA", "."]
+  - name: "gcr.io/cloud-builders/docker"
+    args: ["push", "gcr.io/$PROJECT_ID/${_SERVICE_NAME}:$COMMIT_SHA"]
+  - name: "gcr.io/google.com/cloudsdktool/cloud-sdk"
+    entrypoint: gcloud
+    args:
+      [
+        "run",
+        "deploy",
+        "${_SERVICE_NAME}",
+        "--image",
+        "gcr.io/$PROJECT_ID/${_SERVICE_NAME}:$COMMIT_SHA",
+        "--region",
+        "asia-northeast3",
+        "--allow-unauthenticated",
+      ]
+
+images:
+  - gcr.io/heroic-bonbon-389601/${_SERVICE_NAME}:$COMMIT_SHA
+
+timeout: "3000s"
+
+options:
+  logging: CLOUD_LOGGING_ONLY
