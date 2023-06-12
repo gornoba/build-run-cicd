@@ -42,6 +42,7 @@ steps:
         "--region",
         "asia-northeast3",
         "--allow-unauthenticated",
+        "--set-cloudsql-instances=[${_PROJECT_ID}:asia-northeast3:${_PROD_DB_INSTANCE}]",
       ]
 
 images:
