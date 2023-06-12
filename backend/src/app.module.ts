@@ -24,7 +24,7 @@ import { join } from 'path';
           configService.get('ENV') === 'development'
             ? configService.get('DEV_DB_HOST')
             : configService.get('PROD_DB_HOST'),
-        port: +configService.get('PORT'),
+        port: +configService.get('DB_PORT'),
         username:
           configService.get('ENV') === 'development'
             ? configService.get('DEV_DB_USERNAME')
